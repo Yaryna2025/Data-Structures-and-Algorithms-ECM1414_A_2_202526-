@@ -1,8 +1,6 @@
 # brute force for activity selection (using time as constraint)
 
 from itertools import combinations
-import sys
-
 
 def read_input_file(filename):
     activities = []

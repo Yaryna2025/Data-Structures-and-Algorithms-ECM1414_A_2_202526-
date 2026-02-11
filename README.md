@@ -3,7 +3,8 @@
 ## Overview
 
 This project was developed for the ECM1414 Algorithms and Data Structures coursework.
-It is an **Event Planner** that selects the best combination of activities to maximise enjoyment while respecting constraints (primarily available time).
+It is an **Event Planner** that selects the best combination of activities to maximise enjoyment.
+It does this while considering various constraints.
 
 The program compares:
 
@@ -14,7 +15,7 @@ Both algorithms process the same input and output the chosen activities, totals,
 
 ---
 
-## Files
+## Files Included
 
 * **Final_code_without_extension.py** - Includes dynamic programming implementation
 * **Brute Force.py** - Standalone brute-force implementation
@@ -59,7 +60,7 @@ Enter the input filename when asked (must be in the same directory as Brute Forc
 
 ---
 
-## Input Format
+## Input File Format
 
 Text file structure:
 

@@ -41,7 +41,7 @@ python Final_code_without_extension.py
 ```
 
 Note: the directory structure must be as follows
-
+```
 project/
     code/
         Final_code_without_extension.py
@@ -49,7 +49,7 @@ project/
       input_small.txt
       input_medium.txt
       input_large.txt
-
+```
 ### Brute-force only version
 
 ```bash

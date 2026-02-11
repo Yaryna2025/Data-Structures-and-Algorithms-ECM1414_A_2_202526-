@@ -1,0 +1,132 @@
+FUNCTION read_input_file(filename):
+    activities = empty list
+
+    open filename as file
+    n = read first line as integer
+    max_time, max_budget = read second line and convert both to integers
+
+    repeat n times:
+        line = read next line and strip whitespace
+
+        if line is empty:
+            skip it and continue
+
+        parts = split line by spaces
+        if parts has less than 4 values:
+            print "Skipping invalid line"
+            skip it and continue
+
+        name = parts[0]
+        time_required = int(parts[1])
+        cost = int(parts[2])
+        enjoyment = int(parts[3])
+
+        activity = {"name": name, "time": time_required, "cost": cost, "enjoyment": enjoyment}
+        add activity to activities
+
+    close file
+    return activities, max_time, max_budget
+
+
+FUNCTION brute_force(activities, max_time):
+    best_activities = empty list
+    best_enjoyment = 0
+
+    for subset_size from 0 to length(activities):
+        for each subset of activities with size subset_size:
+            total_time = sum of activity.time for activity in subset
+
+            if total_time is within max_time:
+                total_enjoyment = sum of activity.enjoyment for activity in subset
+
+                if total_enjoyment is better than best_enjoyment:
+                    best_enjoyment = total_enjoyment
+                    best_activities = subset
+
+    return best_activities, best_enjoyment
+
+
+FUNCTION dynamic_programming(activities, max_time):
+    n = length(activities)
+
+    make a 2D table dp with (n+1) rows and (max_time+1) columns, filled with 0
+    dp[i][t] will mean: best enjoyment using first i activities with time limit t
+
+    for i from 1 to n:
+        activity = activities[i - 1]
+
+        for t from 0 to max_time:
+            if activity.time fits in t:
+                skip_activity = dp[i - 1][t]
+                include_activity = dp[i - 1][t - activity.time] + activity.enjoyment
+                dp[i][t] = max(skip_activity, include_activity)
+            else:
+                dp[i][t] = dp[i - 1][t]
+
+    max_enjoyment = dp[n][max_time]
+
+    chosen = empty list
+    t = max_time
+
+    for i from n down to 1:
+        if dp[i][t] is different from dp[i - 1][t]:
+            activity = activities[i - 1]
+            add activity to chosen
+            t = t - activity.time
+
+    reverse chosen
+    return chosen, max_enjoyment
+
+
+FUNCTION results(label, best_activities, max_enjoyment, exec_time):
+    print a header using label
+
+    if best_activities is not empty:
+        print "Selected Activities:"
+        for each activity in best_activities:
+            print activity name, time, cost, enjoyment
+    else:
+        print "No activities were selected."
+
+    total_time_used = sum of activity.time for activity in best_activities
+    total_cost_used = sum of activity.cost for activity in best_activities
+
+    print total enjoyment, total time used, total cost, and execution time
+
+
+FUNCTION event_planner_summary():
+    loop forever:
+        ask user for input size (small/medium/large) or 'e' to exit
+        convert input to lowercase
+
+        if input is 'e':
+            stop the program
+
+        if input is not one of small/medium/large:
+            print an error message
+            continue
+
+        build filename pointing to Input_Files/input_<size>.txt (relative to the script)
+
+        if filename does not exist:
+            print "Input file is not found"
+            continue
+
+        activities, max_time, max_budget = read_input_file(filename)
+
+        print a title + show chosen file, max_time, max_budget
+
+        start timer
+        best_activities, max_enjoyment = brute_force(activities, max_time)
+        stop timer
+        call results for brute force
+
+        start timer
+        best_activities, max_enjoyment = dynamic_programming(activities, max_time)
+        stop timer
+        call results for dynamic programming
+
+
+MAIN:
+    if this file is being run directly:
+        call event_planner_summary()

@@ -71,9 +71,9 @@ ActivityName Time Cost Enjoyment
 ...
 ```
 
-* `n` = number of activities
-* `T` = max time
-* `B` = max budget
+* n = number of activities
+* T = max time
+* B = max budget
 
 ---
 

@@ -1,54 +1,71 @@
+# 1. Handiling of an input
 FUNCTION read_input_file(filename):
     activities = empty list
 
     open filename as file
-    n = read first line as integer
-    max_time, max_budget = read second line and convert both to integers
+        # Checks how many activities we have by reading the given file.
+        n = read first line as integer
+        # By using map we do a shortcut to do it one time, by coverting several strings to integers.
+        max_time, max_budget = read second line and convert both to integers
 
-    repeat n times:
-        line = read next line and strip whitespace
+        repeat n times:
+            # Reads lines and skips if line is empty.
+            line = read next line and strip whitespace
 
-        if line is empty:
-            skip it and continue
+            if line is empty:
+                skip it and continue
 
-        parts = split line by spaces
-        if parts has less than 4 values:
-            print "Skipping invalid line"
-            skip it and continue
+            # By splitting line into parts we can skip the lines that can lead code to failure.
+            parts = split line by spaces
+            # Number four refers to 4 parts: name, time, cost and enjoyment.
+            if parts has less than 4 values:
+                print "Skipping invalid line"
+                skip it and continue
 
-        name = parts[0]
-        time_required = int(parts[1])
-        cost = int(parts[2])
-        enjoyment = int(parts[3])
+            name = parts[0]
+            time_required = int(parts[1])
+            cost = int(parts[2])
+            enjoyment = int(parts[3])
 
-        activity = {"name": name, "time": time_required, "cost": cost, "enjoyment": enjoyment}
-        add activity to activities
+            # For more convinient use, we store activity as dictionary.
+            activity = {"name": name, "time": time_required, "cost": cost, "enjoyment": enjoyment}
+            add activity to activities
 
     close file
     return activities, max_time, max_budget
 
 
+# 2. Brute-force algorithm
 FUNCTION brute_force(activities, max_time):
+    # We try to find the best combination of given activities.
     best_activities = empty list
-    best_enjoyment = 0
+    max_enjoyment = 0
 
+    # Check every possible number of our given activities.
     for subset_size from 0 to length(activities):
+        # By using Python Library itertools, we generate all possible combinations of length of s,
+        # which is as stated above from 0 up to len(activities).
         for each subset of activities with size subset_size:
+            # Check that we only consider subsets that are suitable for available time.
             total_time = sum of activity.time for activity in subset
 
             if total_time is within max_time:
+                # Calculate the total enjoyment of the current subset.
                 total_enjoyment = sum of activity.enjoyment for activity in subset
 
-                if total_enjoyment is better than best_enjoyment:
-                    best_enjoyment = total_enjoyment
+                if total_enjoyment is better than max_enjoyment:
+                    # Update previously stated max_enjoyment and best_activities.
+                    max_enjoyment = total_enjoyment
                     best_activities = subset
 
-    return best_activities, best_enjoyment
+    return best_activities, max_enjoyment
 
 
+# 3. Dynamic programming algorithm
 FUNCTION dynamic_programming(activities, max_time):
     n = length(activities)
 
+    # Create the table in 2D in which we will store achievable maximum enjoyment.
     make a 2D table dp with (n+1) rows and (max_time+1) columns, filled with 0
     dp[i][t] will mean: best enjoyment using first i activities with time limit t
 
@@ -56,31 +73,47 @@ FUNCTION dynamic_programming(activities, max_time):
         activity = activities[i - 1]
 
         for t from 0 to max_time:
+            # Check if our activity is suitable for left time.
+            # Check what happends if it fits.
             if activity.time fits in t:
+                # We have then two choices: skip the activity or include it.
+                # Skip the current activity.
                 skip_activity = dp[i - 1][t]
+
+                # Include the current activity.
                 include_activity = dp[i - 1][t - activity.time] + activity.enjoyment
+
+                # Choose the option with higher total enjoyment.
                 dp[i][t] = max(skip_activity, include_activity)
             else:
+                # Include the possibility when activity does not fit.
                 dp[i][t] = dp[i - 1][t]
 
     max_enjoyment = dp[n][max_time]
 
-    chosen = empty list
     t = max_time
+    best_activities = empty list
 
+    # We loop from end to beginning to see which activities contributes to the maximum enjoyment.
     for i from n down to 1:
+        # Check if this activity was included in possible solution.
         if dp[i][t] is different from dp[i - 1][t]:
+            # Get the activity which has maximum enjoyment.
             activity = activities[i - 1]
-            add activity to chosen
+            add activity to best_activities
+            # Reduce remaining time by this activity's time.
             t = t - activity.time
 
-    reverse chosen
-    return chosen, max_enjoyment
+    # Fix the order as we iterated from the end.
+    reverse best_activities
+    return best_activities, max_enjoyment
 
 
+# 4. Print of the results
 FUNCTION results(label, best_activities, max_enjoyment, exec_time):
     print a header using label
 
+    # Check if any activities where selected.
     if best_activities is not empty:
         print "Selected Activities:"
         for each activity in best_activities:
@@ -94,6 +127,7 @@ FUNCTION results(label, best_activities, max_enjoyment, exec_time):
     print total enjoyment, total time used, total cost, and execution time
 
 
+# 5. Main execution
 FUNCTION event_planner_summary():
     loop forever:
         ask user for input size (small/medium/large) or 'e' to exit
@@ -112,19 +146,26 @@ FUNCTION event_planner_summary():
             print "Input file is not found"
             continue
 
+        # Read the activities.
         activities, max_time, max_budget = read_input_file(filename)
 
         print a title + show chosen file, max_time, max_budget
 
+        # Brute-force
         start timer
         best_activities, max_enjoyment = brute_force(activities, max_time)
+        # Calculate how much time did the brute-force algorithm take.
         stop timer
         call results for brute force
 
+        # Dynamic Programming
         start timer
         best_activities, max_enjoyment = dynamic_programming(activities, max_time)
+        # Calculate how much time did the dynamic-programming algorithm take.
         stop timer
         call results for dynamic programming
+
+        # PLS CHECK IF WE NEED TO INCLUDE NOTES HERE: Algorithm Complexity THROUGH PRINT
 
 
 MAIN:

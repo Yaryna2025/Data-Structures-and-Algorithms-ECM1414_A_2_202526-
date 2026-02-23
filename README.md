@@ -49,7 +49,7 @@ Note: the directory structure must be as follows
 ```
 project/
     code/
-        event_planner-with_extension.py
+        event_planner_with_extension.py
         event_planner.py
     Input_Files/
       input_small.txt
@@ -59,7 +59,11 @@ project/
 ### Brute-force only version
 
 ```bash
-python "Brute Force.py"
+python "brute_force_with_extension.py"
+```
+or, for the version without the extension:
+```bash
+python "brute_force.py"
 ```
 
 Enter the input filename when asked (must be in the same directory as Brute Force.py).

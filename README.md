@@ -17,11 +17,12 @@ Both algorithms process the same input and output the chosen activities, totals,
 
 ## Files Included
 
-* **Final_code_without_extension.py** - Includes dynamic programming implementation
-* **Brute Force.py** - Standalone brute-force implementation
-* **Brute Force Extension.py** - Version checking both time and budget
-* **constraints_4_2.py** - Constraint helper functions
-* **pseudocode brute force.txt** - Brute force algorithm pseudocode
+* **event_planner_with_extension.py** - Includes brute force and dynamic programming implementation with extension
+* **event_planner.py** - Includes brute force and dynamic programming implementation without extension
+* **brute_force.py** - Standalone brute-force implementation
+* **brute_force_extension.py** - Version checking both time and budget
+* **pseudocode brute force.txt** - Brute-force algorithm pseudocode
+* **final code pseudocode.txt** - Pseudocode for event_planner.py
 * **README.md** - This file
 
 ---
@@ -37,14 +38,19 @@ Both algorithms process the same input and output the chosen activities, totals,
 ### Main version
 
 ```bash
-python Final_code_without_extension.py
+python event_planner_with_extension.py
+```
+or, for the version without the extension:
+```bash
+python event_planner.py
 ```
 
 Note: the directory structure must be as follows
 ```
 project/
     code/
-        Final_code_without_extension.py
+        event_planner-with_extension.py
+        event_planner.py
     Input_Files/
       input_small.txt
       input_medium.txt
@@ -76,10 +82,54 @@ ActivityName Time Cost Enjoyment
 * B = max budget
 
 ---
+## Output
+
+For each algorithm the program displays:
+  1. Input File, which shows the name of the input file being used
+  2. Selected Activities: List of chosen activities with time, cost, and enjoyment
+  3. Total Enjoyment: Sum of enjoyment values
+  4. Total Time Used: Sum of time required
+  5. Total Cost: Sum of costs
+  6. Available Time and Budget, which displays constraints
+  7. Execution Time: Time taken by the algorithm
+
+Below is an example output of what you can expect when running the code using `input_small.txt`. Execution times may vary.
+```bash
+========================================
+EVENT PLANNER - RESULTS
+========================================
+Input File: input_small.txt
+Available Time: 10 hours
+Available Budget: £200
+--- BRUTE FORCE ALGORITHM ---
+Selected Activities:
+- Game-Night (3 hours, £80, enjoyment 120)
+- Pizza-Workshop (2 hours, £60, enjoyment 100)
+- Hiking (5 hours, £30, enjoyment 140)
+Total Enjoyment: 360
+Total Time Used: 10 hours
+Total Cost: £170
+Execution Time: 0.002 seconds
+--- DYNAMIC PROGRAMMING ALGORITHM ---
+Selected Activities:
+- Game-Night (3 hours, £80, enjoyment 120)
+- Pizza-Workshop (2 hours, £60, enjoyment 100)
+- Hiking (5 hours, £30, enjoyment 140)
+Total Enjoyment: 360
+Total Time Used: 10 hours
+Total Cost: £170
+Execution Time: 0.001 seconds
+========================================
+
+```
+
+---
 
 ## Notes
 
 * Each activity can be selected only once.
 * Time is treated as the primary constraint in the core implementation.
+* Both time and budget constraints are respected in exetension implementation
+* Both algorithms are run on the same input for performance comparison
 
 

@@ -162,6 +162,8 @@ def event_planner_summary():
         # Calculate how much time did the brute-force algorithm take.
         bf_time = time.time() - start
         results("BRUTE FORCE ALGORITHM", best_activities, max_enjoyment, bf_time)
+        # Time complexity: O(2^n) — exponential
+        
 
         # Dynamic Programming
         start = time.time()
@@ -169,6 +171,7 @@ def event_planner_summary():
         # Calculate how much time did the dynamic-programming algorithm take.
         dp_time = time.time() - start
         results("DYNAMIC PROGRAMMING ALGORITHM", best_activities, max_enjoyment, dp_time)
+        # Time complexity: O(n * max_time * max_budget) — much faster for larger inputs
 
         # Show execution times for each algorithm
         print(f"Brute-force execution time: {bf_time:.6f} seconds")

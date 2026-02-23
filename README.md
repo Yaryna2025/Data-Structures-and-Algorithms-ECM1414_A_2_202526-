@@ -59,7 +59,7 @@ project/
 ### Brute-force only version
 
 ```bash
-python "brute_force_with_extension.py"
+python "brute_force_extension.py"
 ```
 or, for the version without the extension:
 ```bash

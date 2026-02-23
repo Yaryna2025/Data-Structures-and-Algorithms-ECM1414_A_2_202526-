@@ -21,7 +21,8 @@ Both algorithms process the same input and output the chosen activities, totals,
 * **event_planner.py** - Includes brute force and dynamic programming implementation without extension
 * **brute_force.py** - Standalone brute-force implementation
 * **brute_force_extension.py** - Version checking both time and budget
-* **pseudocode brute force.txt** - Brute-force algorithm pseudocode
+* **pseudocode brute force.txt** - Pseudocode for brute_force_extension.py
+* **pseudocode brute force.txt** - Pseudocode for brute_force.py
 * **final code pseudocode with extension.txt** - Pseudocode for event_planner_with_extension.py
 * **final code pseudocode.txt** - Pseudocode for event_planner.py
 * **README.md** - This file

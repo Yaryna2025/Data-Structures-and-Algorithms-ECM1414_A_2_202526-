@@ -1,0 +1,182 @@
+=======================================
+EVENT PLANNER PSEUDOCODE (WITH TIME AND BUDGET CONSTRAINTS)
+=======================================
+
+# 1. input handling
+function read_input_file(filename):
+    create empty list activities
+
+    open file with name filename for reading
+
+    # Read number of given activities.
+    n = convert first line of file to integer
+
+    # Read maximum time and budget.
+    max_time, max_budget = convert second line of file (split by space) to integers
+
+    # Read activities.
+    for i from 0 to n-1:
+        read line from file
+        if line is empty then
+            continue
+        split line into parts
+        if number of parts < 4 then
+            print "Skipping invalid line:", line
+            continue
+
+        create activity dictionary
+        set activity['name'] = parts[0]
+        set activity['time'] = convert parts[1] to integer
+        set activity['cost'] = convert parts[2] to integer
+        set activity['enjoyment'] = convert parts[3] to integer
+
+        add activity to activities
+
+    return activities, max_time, max_budget
+end function
+
+# 2. Brute-force algorithm with multiple constraints
+function brute_force(activities, max_time, max_budget):
+    # Get number of activities.
+    n = length of activities
+    # Initialise best combination of activities and maximum enjoyment.
+    best_activities = empty list
+    max_enjoyment = 0
+
+    # Try all possible subset sizes.
+    for subset_size from 0 to n:
+        # Generate all combinations of activities of this size.
+        for subset_indices in all combinations of indices of size subset_size:
+            # Initialise current subset and totals.
+            subset = empty list
+            total_time = 0
+            total_cost = 0
+            total_enjoyment = 0
+
+            # Build actual subset and compute totals.
+            for each i in subset_indices:
+                activity = activities[i]
+                add activity to subset
+                total_time = total_time + activity['time']
+                total_cost = total_cost + activity['cost']
+                total_enjoyment = total_enjoyment + activity['enjoyment']
+
+            # Check both constraints if they are satisfied with the current subset.
+            if total_time <= max_time and total_cost <= max_budget:
+                # Update best solution if this subset has higher enjoyment.
+                if total_enjoyment > max_enjoyment:
+                    max_enjoyment = total_enjoyment
+                    best_activities = subset
+
+    # Return the best subset and its total enjoyment
+    return best_activities, max_enjoyment
+end function
+
+# 3. Dynamic programming algorithm with multiple constraints
+function dynamic_programming(activities, max_time, max_budget):
+    n = length of activities
+    # Create the table in 3D in which we will store achievable maximum enjoyment.
+    max_enjoyment_table = empty list
+    for i from 0 to n inclusive:
+        time_layer = empty list
+        for t from 0 to max_time inclusive:
+            budget_layer = list of zeros of length (max_budget + 1)
+            add budget_layer to time_layer
+        add time_layer to max_enjoyment_table
+
+    # Fill the table.
+    # For each activity, possible remaining time and budget:
+    # decide if we need to include the activity or skip it, and store the best total enjoyment.
+    for i from 1 to n inclusive:
+        activity = activities[i-1]
+        for t from 0 to max_time inclusive:
+            for c from 0 to max_budget inclusive:
+                if activity['time'] <= t and activity['cost'] <= c:
+                    include = max_enjoyment_table[i-1][t - activity['time']][c - activity['cost']] + activity['enjoyment']
+                    skip = max_enjoyment_table[i-1][t][c]
+                    max_enjoyment_table[i][t][c] = max(include, skip)
+                else:
+                    max_enjoyment_table[i][t][c] = max_enjoyment_table[i-1][t][c]
+
+    # Backtrack to find chosen activities.
+    best_activities = empty list
+    t = max_time
+    c = max_budget
+    # We loop from end to beginning to see which activities contributes to the maximum enjoyment.
+    for i from n down to 1:
+        # Check if this activity was included in the possible solution.
+        if max_enjoyment_table[i][t][c] != max_enjoyment_table[i-1][t][c]:
+            activity = activities[i-1]
+            add activity to best_activities
+            # Reduce remaining time and budget
+            t = t - activity['time']
+            c = c - activity['cost']
+
+    reverse best_activities
+    max_enjoyment = max_enjoyment_table[n][max_time][max_budget]
+    return best_activities, max_enjoyment
+end function
+
+# 4. Print results
+function results(label, best_activities, max_enjoyment, exec_time):
+    print "---", label, "---"
+    # Check if any activities where selected.
+    if best_activities is not empty:
+        print "Selected activities:"
+        for each activity in best_activities:
+            print "-", activity['name'], "(", activity['time'], "hours, £", activity['cost'], ", enjoyment", activity['enjoyment'], ")"
+    else:
+        print "No activities were selected"
+
+    total_time_used = sum of activity['time'] for activity in best_activities
+    total_cost_used = sum of activity['cost'] for activity in best_activities
+
+    print "Total Enjoyment:", max_enjoyment
+    print "Total Time Used:", total_time_used, "hours"
+    print "Total Cost: £", total_cost_used
+    print "Execution Time:", exec_time, "seconds"
+end function
+
+# 5. Main Execution
+function event_planner_summary():
+    while true:
+        ask user for input size (small, medium, large) or 'e' to exit
+        if input is 'e', break
+        if input not in ('small', 'medium', 'large'):
+            print "Incorrect input, please choose: small, medium, or large."
+            continue
+
+        filename = build file path based on input size
+        if file does not exist:
+            print "Input file not found:", filename
+            continue
+
+        # Read the activities.
+        activities, max_time, max_budget = read_input_file(filename)
+
+        print "========================================"
+        print "EVENT PLANNER - RESULTS"
+        print "========================================"
+        print "Input File:", base name of filename
+        print "Available Time:", max_time, "hours"
+        print "Available Budget: £", max_budget, "\n"
+
+        # Brute-force
+        start_time = current time
+        best_activities, max_enjoyment = brute_force(activities, max_time, max_budget)
+        # Calculate how much time did the brute-force algorithm take.
+        bf_time = current time - start_time
+        results("BRUTE FORCE ALGORITHM", best_activities, max_enjoyment, bf_time)
+
+        # Dynamic Programming
+        start_time = current time
+        best_activities, max_enjoyment = dynamic_programming(activities, max_time, max_budget)
+        # Calculate how much time did the dynamic-programming algorithm take.
+        dp_time = current time - start_time
+        results("DYNAMIC PROGRAMMING ALGORITHM", best_activities, max_enjoyment, dp_time)
+
+        # Show execution times for each algorithm (for comparison)
+        print "Brute-force execution time:", bf_time, "seconds"
+        print "Dynamic programming execution time:", dp_time, "seconds"
+main:
+    call event_planner_summary()

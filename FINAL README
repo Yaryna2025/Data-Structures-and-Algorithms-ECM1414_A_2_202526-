@@ -17,8 +17,8 @@ Both algorithms process the same input and output the chosen activities, totals,
 Files Included
 ==============
 
-- event_planner_with_extension.py - Final version including brute-force and dynamic programming algorithms (WITH extention)
-- event_planner.py - Final version including brute-force and dynamic programming algorithms (WITHOUT extention)
+- event_planner_with_extension.py - Final version including brute-force and dynamic programming algorithms (WITH extension)
+- event_planner.py - Final version including brute-force and dynamic programming algorithms (WITHOUT extension)
 - Input_Files/input_small.txt - Sample input file (small dataset)
 - Input_Files/input_medium.txt - Sample input file (medium dataset)
 - Input_Files/input_large.txt - Sample input file (large dataset)

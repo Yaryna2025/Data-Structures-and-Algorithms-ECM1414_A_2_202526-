@@ -1,0 +1,59 @@
+pseudocode for brute force
+
+FUNCTION read_input_file(filename):
+    activities = empty list
+
+    open the file
+    read the number of activities (first line)
+
+    read max_time and max_budget (second line)
+
+    for each of the remaining lines (one per activity):
+        read: name, time_required, cost, enjoyment
+        store those values in a dictionary/record
+        add it to activities
+
+    close the file
+    return activities, max_time, max_budget
+
+
+FUNCTION brute_force(activities, max_time, max_budget):
+    best_activities = empty list
+    best_enjoyment = 0
+
+    try every possible combination of activities:
+        work out total_time and total_cost for that combination
+
+        if (total_cost and total_time) is within the limit:
+            work out total_enjoyment
+
+            if this enjoyment is better than the best so far:
+                update best_enjoyment
+                update best_activities
+
+    return best_activities, best_enjoyment
+
+
+FUNCTION print_solution(best_activities, best_enjoyment, max_time):
+    print max_time
+    print best_enjoyment
+    print how many activities were chosen
+
+    total_time = 0
+    total_cost = 0
+
+    for each activity in best_activities:
+        print the activity details
+        add its time to total_time
+        add its cost to total_cost
+
+    print total_time
+    print total_cost
+    print best_enjoyment
+
+
+MAIN PROGRAM:
+    ask user for the input filename
+    read in the activities and constraints from the file
+    run brute_force to find the best set of activities
+    print out the results

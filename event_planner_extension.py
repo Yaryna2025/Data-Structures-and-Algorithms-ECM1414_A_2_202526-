@@ -6,7 +6,7 @@ import time
 def read_input_file(filename):
     """
    Reads the input file and extracts activity data and constraints.
-   """
+    """
     activities = []
     with open(filename, 'r') as f:
         # Checks how many activities we have by reading the given file.
@@ -140,12 +140,12 @@ def results(label, best_activities, max_enjoyment, exec_time):
 
 # 5. Main Execution
 def event_planner_summary():
-     """
+    """
    Main function that:
    - Reads input files
    - Runs both algorithms
    - Displays and compares results
-   """
+    """
     while True:
         size = input("Please, enter the input size (small, medium, large) or in order to exit press 'e': ").lower()
         if size == 'e':

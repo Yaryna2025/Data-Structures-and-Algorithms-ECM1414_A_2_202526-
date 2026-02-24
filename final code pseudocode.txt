@@ -66,8 +66,11 @@ FUNCTION dynamic_programming(activities, max_time):
     n = length(activities)
 
     # Create the table in 2D in which we will store achievable maximum enjoyment.
-    make a 2D table max_enjoyment_table with (n+1) rows and (max_time+1) columns, filled with 0
-    max_enjoyment_table[i][t] will mean: best enjoyment using first i activities with time limit t
+    # max_enjoyment_table[i][t] = best enjoyment using first i activities with time limit t.
+    max_enjoyment_table = empty list
+    for i from 0 to n:
+        create a new row with max_time + 1 zeros
+        add this row to max_enjoyment_table
 
     for i from 1 to n:
         activity = activities[i - 1]

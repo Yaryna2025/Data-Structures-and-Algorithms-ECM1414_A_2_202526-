@@ -1,3 +1,7 @@
+=======================================
+EVENT PLANNER PSEUDOCODE (WITH TIME CONSTRAINT)
+=======================================
+
 # 1. Handiling of an input
 FUNCTION read_input_file(filename):
     activities = empty list

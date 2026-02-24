@@ -19,7 +19,7 @@ Both algorithms process the same input and output the chosen activities, totals,
 
 * **event_planner_extension.py** - Includes brute force and dynamic programming implementation with extension
 * **event_planner.py** - Includes brute force and dynamic programming implementation without extension
-* **greedy_heuristic.py - Includes a greedy heuristic that attempts to approximate the optimal solution
+* **greedy_heuristic.py** - Includes a greedy heuristic that attempts to approximate the optimal solution
 quickly by selecting activities based on some ratio.
 * **brute_force.py** - Standalone brute-force implementation
 * **brute_force_extension.py** - Version checking both time and budget

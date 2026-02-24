@@ -4,7 +4,7 @@ import itertools
 import time
 
 
-# 1. Handiling of an input
+# 1. Handling of an input
 def read_input_file(filename):
     activities = []
     with open(filename, 'r') as f:

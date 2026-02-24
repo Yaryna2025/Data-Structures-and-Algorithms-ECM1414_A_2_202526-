@@ -1,8 +1,0 @@
-FINAL PSEUDOCODE WITH EXTENSION.txt - Yaryna
-README.md - Daniel + Yaryna
-brute_force.py - Daniel
-brute_force_extension.py - Daniel
-event_planner.py - Yaryna
-event_planner_with_extension - Yaryna
-final code pseudocode.txt- Daniel
-pseudocode brute force.txt - Daniel

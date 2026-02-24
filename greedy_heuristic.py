@@ -31,14 +31,16 @@ def read_input_file(filename):
     return activities, max_time, max_budget
 
 
-# 2. Brute-force algorithm
-def brute_force(activities, max_time):
+# 2. Brute-force algorithm (both constraints)
+def brute_force(activities, max_time, max_budget):
     max_enjoyment = 0
     best_activities = []
     for s in range(len(activities) + 1):
         for subset in itertools.combinations(activities, s):
             total_time = sum(activity['time'] for activity in subset)
-            if total_time <= max_time:
+            total_cost = sum(activity['cost'] for activity in subset)
+            # Check BOTH time and budget constraints
+            if total_time <= max_time and total_cost <= max_budget:
                 total_enjoyment = sum(activity['enjoyment'] for activity in subset)
                 if total_enjoyment > max_enjoyment:
                     max_enjoyment = total_enjoyment
@@ -46,51 +48,61 @@ def brute_force(activities, max_time):
     return best_activities, max_enjoyment
 
 
-# 3. Dynamic programming algorithm
-def dynamic_programming(activities, max_time):
+# 3. Dynamic programming algorithm (both constraints)
+def dynamic_programming(activities, max_time, max_budget):
     n = len(activities)
-    max_enjoyment_table = []
-    for j in range(n + 1):
-        max_enjoyment_table.append([0] * (max_time + 1))
+    # 3D table: [activity][time][budget]
+    dp = []
+    for i in range(n + 1):
+        time_layer = []
+        for t in range(max_time + 1):
+            time_layer.append([0] * (max_budget + 1))
+        dp.append(time_layer)
 
     for i in range(1, n + 1):
         activity = activities[i - 1]
         for t in range(max_time + 1):
-            if activity['time'] <= t:
-                skip_activity = max_enjoyment_table[i - 1][t]
-                include_activity = max_enjoyment_table[i - 1][t - activity['time']] + activity['enjoyment']
-                max_enjoyment_table[i][t] = max(skip_activity, include_activity)
-            else:
-                max_enjoyment_table[i][t] = max_enjoyment_table[i - 1][t]
+            for c in range(max_budget + 1):
+                # Check if activity fits within both remaining time and budget
+                if activity['time'] <= t and activity['cost'] <= c:
+                    skip = dp[i - 1][t][c]
+                    include = dp[i - 1][t - activity['time']][c - activity['cost']] + activity['enjoyment']
+                    dp[i][t][c] = max(skip, include)
+                else:
+                    dp[i][t][c] = dp[i - 1][t][c]
 
+    # Backtrack to find selected activities
     t = max_time
+    c = max_budget
     best_activities = []
     for i in range(n, 0, -1):
-        if max_enjoyment_table[i][t] != max_enjoyment_table[i - 1][t]:
+        if dp[i][t][c] != dp[i - 1][t][c]:
             activity = activities[i - 1]
             best_activities.append(activity)
             t -= activity['time']
+            c -= activity['cost']
     best_activities.reverse()
-    max_enjoyment = max_enjoyment_table[n][max_time]
+    max_enjoyment = dp[n][max_time][max_budget]
     return best_activities, max_enjoyment
 
 
-# 4. Greedy heuristic (Extension 3)
+# 4. Greedy heuristic  - Extension 3
 def greedy_heuristic(activities, max_time, max_budget):
     """
-    Greedy heuristic: selects activities by highest enjoyment-per-hour ratio.
-    Picks each activity in order if it fits within remaining time and budget.
+    EXTENSION 3: Greedy heuristic.
+    Scores each activity by enjoyment per hour, selects highest ratio first,
+    only adding activities that fit within BOTH remaining time and budget.
     """
     if not activities:
         return [], 0
 
-    # Score each activity by enjoyment per hour
+    # Score by enjoyment per hour
     scored = []
     for activity in activities:
         ratio = activity['enjoyment'] / activity['time'] if activity['time'] > 0 else 0
         scored.append((ratio, activity))
 
-    # Sort by ratio, highest first
+    # Sort highest ratio first
     scored.sort(key=lambda x: x[0], reverse=True)
 
     selected = []
@@ -98,6 +110,7 @@ def greedy_heuristic(activities, max_time, max_budget):
     budget_left = max_budget
 
     for _, activity in scored:
+        # Check BOTH time and budget constraints
         if activity['time'] <= time_left and activity['cost'] <= budget_left:
             selected.append(activity)
             time_left -= activity['time']
@@ -138,7 +151,7 @@ def event_planner_summary():
 
         filename = os.path.join(os.path.dirname(__file__), '..', 'Input_Files', f'input_{size}.txt')
         if not os.path.exists(filename):
-            print(f"Input file is not found: {filename}")
+            print(f"Input file not found: {filename}")
             continue
 
         activities, max_time, max_budget = read_input_file(filename)
@@ -152,13 +165,13 @@ def event_planner_summary():
 
         # Brute-force
         start = time.time()
-        best_activities, max_enjoyment = brute_force(activities, max_time)
+        best_activities, max_enjoyment = brute_force(activities, max_time, max_budget)
         bf_time = time.time() - start
         results("BRUTE FORCE ALGORITHM", best_activities, max_enjoyment, bf_time)
 
         # Dynamic Programming
         start = time.time()
-        best_activities, max_enjoyment = dynamic_programming(activities, max_time)
+        best_activities, max_enjoyment = dynamic_programming(activities, max_time, max_budget)
         dp_time = time.time() - start
         results("DYNAMIC PROGRAMMING ALGORITHM", best_activities, max_enjoyment, dp_time)
 

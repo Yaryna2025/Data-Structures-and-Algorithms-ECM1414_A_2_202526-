@@ -171,8 +171,3 @@ def event_planner_summary():
 
 if __name__ == "__main__":
     event_planner_summary()
-
-
-
-if __name__ == "__main__":
-    event_planner_summary()

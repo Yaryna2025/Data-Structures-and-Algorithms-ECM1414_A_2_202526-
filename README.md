@@ -31,7 +31,7 @@ Both algorithms process the same input and output the chosen activities, totals,
 
 ## Requirements
 
-* Python 3 + standard included libraries
+* Python 3 (standard libraries only)
 
 ---
 

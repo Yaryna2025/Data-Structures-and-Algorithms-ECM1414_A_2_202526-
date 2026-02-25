@@ -2,6 +2,7 @@ import os
 import itertools
 import time
 
+
 # 1. Input Handling
 def read_input_file(filename):
     """
@@ -176,7 +177,7 @@ def event_planner_summary():
         bf_time = time.time() - start
         results("BRUTE FORCE ALGORITHM", best_activities, max_enjoyment, bf_time)
         # Time complexity: O(2^n) — exponential
-        
+
 
         # Dynamic Programming
         start = time.time()

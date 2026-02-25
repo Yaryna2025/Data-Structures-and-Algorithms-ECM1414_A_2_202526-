@@ -10,8 +10,9 @@ The program compares:
 
 * A brute-force algorithm *(exhaustive search)*
 * A dynamic programming algorithm *(more efficient approach)*
+* A greedy heuristic *(fast approximation approach)*
 
-Both algorithms process the same input and output the chosen activities, totals, and execution time.
+All algorithms process the same input and output the chosen activities, totals, and execution time.
 
 ---
 
@@ -24,6 +25,7 @@ Both algorithms process the same input and output the chosen activities, totals,
 * **brute_force_extension.py** - Version checking both time and budget
 * **pseudocode_brute_force_extension.txt** - Pseudocode for brute_force_extension.py
 * **pseudocode_brute_force.txt** - Pseudocode for brute_force.py
+* **pseudocode_greedy_heuristic.txt** - Pseudocode for greedy_heuristic.py
 * **pseudocode_with_extension.txt** - Pseudocode for event_planner_with_extension.py
 * **pseudocode.txt** - Pseudocode for event_planner.py
 * **README.md** - This file
@@ -67,6 +69,10 @@ python "brute_force_extension.py"
 or, for the version without the extension:
 ```bash
 python "brute_force.py"
+```
+### Greedy Heuristic version
+```bash
+python greedy_heuristic.py
 ```
 
 Enter the input filename when asked (must be in the same directory as Brute Force.py).
@@ -136,7 +142,6 @@ Execution Time: 0.001 seconds
 
 * Each activity can be selected only once.
 * Time is treated as the primary constraint in the core implementation.
-* Both time and budget constraints are respected in exetension implementation
-* Both algorithms are run on the same input for performance comparison
-
-
+* Both time and budget constraints are respected in extension implementation.
+* All algorithms are run on the same input for performance comparison.
+* The greedy heuristic provides a fast approximation but does not guarantee the optimal solution.

@@ -1,5 +1,4 @@
 import os
-import sys
 import itertools
 import time
 
@@ -167,7 +166,9 @@ def event_planner_summary():
         dp_time = time.time() - start
         results("DYNAMIC PROGRAMMING ALGORITHM", best_activities, max_enjoyment, dp_time)
 
-        # PLS CHECK IF WE NEED TO INCLUDE NOTES HERE: Algorithm Complexity THROUGH PRINT
+        # Show execution times for each algorithm
+        print(f"Brute-force execution time: {bf_time:.6f} seconds")
+        print(f"Dynamic programming execution time: {dp_time:.6f} seconds")
 
 if __name__ == "__main__":
     event_planner_summary()

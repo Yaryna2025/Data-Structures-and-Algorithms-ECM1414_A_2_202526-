@@ -1,5 +1,4 @@
 import os
-import sys
 import itertools
 import time
 
@@ -96,13 +95,13 @@ def greedy_heuristic(activities, max_time, max_budget):
     if not activities:
         return [], 0
 
-    # Score by enjoyment per hour
+    # For every activity, calculate how much enjoyment you get for each hour spent on it.
     scored = []
     for activity in activities:
         ratio = activity['enjoyment'] / activity['time'] if activity['time'] > 0 else 0
         scored.append((ratio, activity))
 
-    # Sort highest ratio first
+    # Sort highest ratio first.
     scored.sort(key=lambda x: x[0], reverse=True)
 
     selected = []
@@ -110,7 +109,7 @@ def greedy_heuristic(activities, max_time, max_budget):
     budget_left = max_budget
 
     for _, activity in scored:
-        # Check BOTH time and budget constraints
+        # Check both time and budget constraints.
         if activity['time'] <= time_left and activity['cost'] <= budget_left:
             selected.append(activity)
             time_left -= activity['time']
@@ -181,18 +180,24 @@ def event_planner_summary():
         greedy_time = time.time() - start
         results("GREEDY HEURISTIC (Extension 3)", greedy_activities, greedy_enjoyment, greedy_time)
 
-        # Comparison summary
         print("========================================")
         print("ALGORITHM COMPARISON SUMMARY")
         print("========================================")
         print(f"Brute Force:         {max_enjoyment} enjoyment  ({bf_time:.6f}s)")
         print(f"Dynamic Programming: {max_enjoyment} enjoyment  ({dp_time:.6f}s)")
+
+        # Show Greedy Heuristic outcome and how close it is to the optimal solution.
         if max_enjoyment > 0:
-            pct = (greedy_enjoyment / max_enjoyment) * 100
-            print(f"Greedy Heuristic:    {greedy_enjoyment} enjoyment  ({greedy_time:.6f}s) — {pct:.1f}% of optimal")
+            percentage = (greedy_enjoyment / max_enjoyment) * 100
+            print(f"Greedy Heuristic:    {greedy_enjoyment} enjoyment  ({greedy_time:.6f}s) — {percentage:.1f}% of optimal")
         else:
             print(f"Greedy Heuristic:    {greedy_enjoyment} enjoyment  ({greedy_time:.6f}s)")
         print("========================================\n")
+
+        # Show execution times for each algorithm.
+        print(f"Brute-force execution time: {bf_time:.6f} seconds")
+        print(f"Dynamic programming execution time: {dp_time:.6f} seconds")
+        print(f"Greedy execution time: {greedy_time:.6f} seconds")
 
 
 if __name__ == "__main__":

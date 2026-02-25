@@ -175,7 +175,7 @@ function event_planner_summary():
         dp_time = current time - start_time
         results("DYNAMIC PROGRAMMING ALGORITHM", best_activities, max_enjoyment, dp_time)
 
-        # Show execution times for each algorithm (for comparison)
+        # Show execution times for each algorithm (for comparison).
         print "Brute-force execution time:", bf_time, "seconds"
         print "Dynamic programming execution time:", dp_time, "seconds"
 main:
